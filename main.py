@@ -1,15 +1,18 @@
 import os
 import urllib.parse as up
 import psycopg2
+import psycopg2.sql
 
 from credentials import set_credentials
 from database_interface import DatabaseInterface
+from generate_database import generate_database
 
 def main():
     # Set os.environ["DATABASE_URL"]
     set_credentials()
     db_interface = initialize_interface()
-    db_interface.test_execute()
+    generate_database(db_interface)
+    db_interface.end_connection()
 
 
 def initialize_interface():
