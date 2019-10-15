@@ -1,0 +1,14 @@
+{
+  "1": {
+    "name": "Johnson Smith",
+    "race": "Elf",
+    "class": "Barbarian",
+    "level": "1"
+  },
+  "2": {
+    "name": "Jane Doe",
+    "race": "Dwarf",
+    "class": "Wizard",
+    "level": "3"
+  }
+}

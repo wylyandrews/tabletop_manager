@@ -6,7 +6,7 @@ import psycopg2
 from credentials import set_credentials
 from database_interface import DatabaseInterface
 from utils.json_utils import import_json
-from simple_query import make_table, drop_table
+from simple_query import make_table, drop_table, insert_into_table
 
 
 class DatabaseManager:
@@ -39,10 +39,21 @@ class DatabaseManager:
             create_commands.append(make_table(table_name, table_values))  # Create
             self.tables.append(table_name)                                # Record
 
-        # Execute
+        # Execute and save
         self.db_interface.execute_commands(drop_commands + create_commands)
+        self.db_interface.connection.commit()
 
-        # Save and close
+    def insert_characters(self):
+        # load from json file
+        insert_json = import_json(os.path.join(config.JSON_DIRECTORY, "characters.json"))
+
+        # generate queries
+        commands = list()
+        for row in insert_json.values():
+            commands.append((insert_into_table("characters", row), [val for val in row.values()]))
+
+        # Execute and save
+        self.db_interface.execute_commands(*commands)
         self.db_interface.connection.commit()
 
     def shutdown(self):

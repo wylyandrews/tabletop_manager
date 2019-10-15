@@ -7,11 +7,18 @@ def make_table(name, values):
         return "CREATE TABLE IF NOT EXISTS {0} ({1})".format(name, ", ".join(values))
     if isinstance(values, dict):
         return "CREATE TABLE IF NOT EXISTS {0} ({1})".format(name, ", ".join([" ".join(col) for col in values.items()]))
+    raise Exception("make_table given with invalid arguments")
 
 
 # Returns an SQL query to drop a table
 def drop_table(name):
     return sql.SQL("DROP TABLE IF EXISTS {0}").format(sql.Identifier(name))
 
+
 def insert_into_table(name, values):
-    pass
+    if isinstance(values, dict):
+        return sql.SQL("INSERT INTO {0} ({1}) VALUES ({2})")\
+                        .format(sql.Identifier(name),
+                                sql.SQL(", ").join(map(sql.Identifier, values)),
+                                sql.SQL(", ".join(["%s" for _ in range(len(values))]))
+    raise Exception("make_table given with invalid arguments")
